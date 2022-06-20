@@ -43,7 +43,16 @@
     margin-bottom: 16px;
     flex-direction: column;
   }
-  
+
+  .form-group.gender_radio, .gender_radio_item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .gender_radio_item .form-control{
+  margin-right: 4px !important;
+  }
   .form-label,
   .form-message {
     text-align: left;
