@@ -80,29 +80,29 @@ function Validator(options) {
           var formValues = Array.from(enableInputs).reduce(function(values, input)  {
             //  gán input.value cho value[input.name] sau đó trả về values
             // return (values[input.name] = input.value) && values;
-            console.log(values,values[input.name],input,input.name)
             switch (input.type) {
               case "radio":
                 values[input.name] = formElement.querySelector('input[name="' + input.name + '"]:checked').value;
                 break;
               case "checkbox":
-                // Kiểm tra  nếu không checked
-                if (!input.matches(":checked")) {
-                  values[input.name] = '';
-                  return values;
-                }
-                //
                 if (!Array.isArray(values[input.name])) {
                   values[input.name] = [];
                 }
-
-                values[input.name].push(input.value);
+                // Kiểm tra  nếu không checked
+                if (input.matches(":checked")) {
+                  values[input.name].push(input.value);
+                }
+                // console.log(input,!input.matches(":checked"),input.value,values[input.name],values)
+                break;
+              case "file":
+                values[input.name] = input.files;
                 break;
               default:
                 values[input.name] = input.value;
-                console.log(input.type,input.name,input.value,!input.matches(":checked"))
+                // console.log(input.type,input.name,input.value,!input.matches(":checked"))
             }
-            // console.log(values)
+            //  Nếu phần tử là mảng mà không có phần tử nào thì trả về chuỗi rỗng
+            if(values[input.name].length==0)values[input.name]='';
             return values;
           }, {});
           // console.log(formValues);
@@ -113,7 +113,7 @@ function Validator(options) {
           formElement.submit();
         }
       } else {
-        console.log(" có lỗi  ");
+        // console.log(" có lỗi  ");
       }
     };
     //  LẶp qua mỗi rule và xử lý thông tin các in input trong form
