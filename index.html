@@ -19,30 +19,30 @@
 
             <div class="form-group">
                 <label for="fullname" class="form-label">Tên đầy đủ</label>
-                <input id="fullname" name="fullname" type="text" placeholder="VD: Sơn Đặng" class="form-control">
+                <input id="fullname" name="fullname" rules="Required" type="text" placeholder="VD: Sơn Đặng" class="form-control">
                 <span class="form-message"></span>
             </div>
 
             <div class="form-group">
                 <label for="email" class="form-label">Email</label>
-                <input id="email" name="email" type="text" placeholder="VD: email@domain.com" class="form-control">
+                <input id="email" name="email" rules="Required|email" type="text" placeholder="VD: email@domain.com" class="form-control">
                 <span class="form-message"></span>
             </div>
             <div class="form-group">
                 <label for="avatar" class="form-label">Avatar</label>
-                <input id="avatar" name="avatar" type="file" class="form-control">
+                <input id="avatar" name="avatar" rules="Required" type="file" class="form-control">
                 <span class="form-message"></span>
             </div>
 
             <div class="form-group">
                 <label for="password" class="form-label">Mật khẩu</label>
-                <input id="password" name="password" type="password" placeholder="Nhập mật khẩu" class="form-control">
+                <input id="password" name="password" rules="Required|min:6" type="password" placeholder="Nhập mật khẩu" class="form-control">
                 <span class="form-message"></span>
             </div>
 
             <div class="form-group">
                 <label for="password_confirmation" class="form-label">Nhập lại mật khẩu</label>
-                <input id="password_confirmation" name="password_confirmation" placeholder="Nhập lại mật khẩu"
+                <input id="password_confirmation" rules="Required|min:6" name="password_confirmation" placeholder="Nhập lại mật khẩu"
                     type="password" class="form-control">
                 <span class="form-message"></span>
             </div>
@@ -77,8 +77,10 @@
             <button class="form-submit">Đăng ký</button>
         </form>
     </div>
-    <script src="./validation/validator.js"> </script>
-    <script>
+    <!-- <script src="./validation/validator.js"> </script> -->
+    <script src="./validation/validator2.js"> </script>
+
+    <!-- <script>
         //  output expect
         var tesst = Validator({
             form: '#form-1',
@@ -102,6 +104,10 @@
                 console.log(data)
             }
         })
+
+    </script> -->
+    <script>
+       Validator('#form-1',{onSubmit:function(data){console.log(data)}})
 
     </script>
 </body>
