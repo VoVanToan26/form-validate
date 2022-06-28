@@ -1,8 +1,8 @@
-function Validator(formSelector, options) {
+function Validator(formSelector) {
   //  Gán giá trị mặc định cho tham sối
-  if (!options) {
-    options = {};
-  }
+  //   if (!options) {
+  //     options = {};
+  //   }
   function getParentElement(inputElement, selector) {
     // var errorElement = inputElement.parentElement.querySelector(options.errSelector.)
     while (inputElement.parentElement) {
@@ -108,23 +108,57 @@ function Validator(formSelector, options) {
     // console.log(formRules);
   }
 
+  _this = this;
   //    Xử lý hành vi submit
   formElement.onsubmit = function (e) {
     e.preventDefault();
+
+    //  this keyword
     var inputs = formElement.querySelectorAll("[name][rules]");
     var isValid = true;
     for (var input of inputs) {
       if (!handleValidate({ target: input })) {
         var isValid = false;
       }
-      console.log()
-      if (isValid) {
-        if (typeof options.onSubmit === "function"){options.onSubmit('ádasd');}
-         else {
-            formElement.submit();
+        if (isValid) {
+          if (typeof _this.onSubmit === "function"){
+            var enableInputs = formElement.querySelectorAll(
+                "[name]:not([disabled])"
+              );
+              var formValues = Array.from(enableInputs).reduce(function(values, input)  {
+                //  gán input.value cho value[input.name] sau đó trả về values
+                // return (values[input.name] = input.value) && values;
+                switch (input.type) {
+                  case "radio":
+                    values[input.name] = formElement.querySelector('input[name="' + input.name + '"]:checked').value;
+                    break;
+                  case "checkbox":
+                    if (!Array.isArray(values[input.name])) {
+                      values[input.name] = [];
+                    }
+                    // Kiểm tra  nếu không checked
+                    if (input.matches(":checked")) {
+                      values[input.name].push(input.value);
+                    }
+                    // console.log(input,!input.matches(":checked"),input.value,values[input.name],values)
+                    break;
+                  case "file":
+                    values[input.name] = input.files;
+                    break;
+                  default:
+                    values[input.name] = input.value;
+                    // console.log(input.type,input.name,input.value,!input.matches(":checked"))
+                }
+                //  Nếu phần tử là mảng mà không có phần tử nào thì trả về chuỗi rỗng
+                if(values[input.name].length==0)values[input.name]='';
+                return values;
+              }, {});
+              _this.onSubmit(formValues)
           }
-        }
-
-      } 
+           else {
+              formElement.submit();
+            }
+          }
+    }
   };
 }
